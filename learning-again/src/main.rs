@@ -1,9 +1,17 @@
-fn main() {
-    let name = String::from("Soham");
-    let len = get_str_len(name);
-    println!("The length is {}",len);
+struct User {
+    name: String,
+    lastname: String,
+    age: u16,
 }
 
-fn get_str_len(s: String) -> usize {
-    s.chars().count()
+fn main() {
+    let user = User {
+        name: String::from("Soham"),
+        lastname: String::from("Desai"),
+        age: 22,
+    };
+
+    println!("{}",user.name);
+    println!("{}",user.lastname);
+    println!("{}",user.age)
 }
