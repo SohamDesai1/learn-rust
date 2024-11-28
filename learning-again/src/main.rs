@@ -1,16 +1,23 @@
-fn print_str(s:&mut String) {
-    s.push_str(" desai");
-    println!("{}",s)
-}
+use std::{sync::mpsc, thread};
 
 fn main() {
-    let mut s = String::from("soham");
-    print_str(&mut s);
+    let (tx, rx) = mpsc::channel();
 
-    //OR
-    let mut a =  String::from("Soham Desai");
-    let b = &mut a;
-    // let c = &mut a; // Gives error because the rule says that no 2 mutable var 
-    let c = &b;
-    println!("{},{}",b,c)
+    for i in 0..10 {
+        let producer = tx.clone();
+        thread::spawn(move || {
+            let mut sum = 0;
+            for j in i * 10000..(i + 1 * 10000) - 1 {
+                sum = sum + j;
+            }
+            producer.send(sum).unwrap()
+        });
+    }
+    drop(tx);
+    let mut ans = 0;
+    for val in rx {
+        ans = ans + val;
+    }
+
+    println!("{}", ans);
 }
