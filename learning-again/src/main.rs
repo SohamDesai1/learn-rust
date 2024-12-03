@@ -1,23 +1,16 @@
-use std::{sync::mpsc, thread};
+#[tokio::main]
+async fn main(){
+    let a = my_fn();
+    println!("Demo");
+    a.await;
+}
 
-fn main() {
-    let (tx, rx) = mpsc::channel();
-
-    for i in 0..10 {
-        let producer = tx.clone();
-        thread::spawn(move || {
-            let mut sum = 0;
-            for j in i * 10000..(i + 1 * 10000) - 1 {
-                sum = sum + j;
-            }
-            producer.send(sum).unwrap()
-        });
-    }
-    drop(tx);
-    let mut ans = 0;
-    for val in rx {
-        ans = ans + val;
-    }
-
-    println!("{}", ans);
+async fn my_fn() {
+    let s1 = demo().await;
+    println!("First {s1}");
+    let s2 = demo().await;
+    println!("Second {s2}");
+}
+async fn demo() ->String{
+    "Demo".to_owned()
 }
