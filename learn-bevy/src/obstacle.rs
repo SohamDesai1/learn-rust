@@ -2,7 +2,10 @@ use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 use std::ops::Range;
 
-use crate::movement::{Accerleration, MovingObjBundle, Velocity};
+use crate::{
+    asset_loader::SceneAssets,
+    movement::{Accerleration, MovingObjBundle, Velocity},
+};
 
 const SPAWN_RANGE_X: Range<f32> = -20.0..20.0;
 const SPAWN_RANGE_Z: Range<f32> = 0.0..20.0;
@@ -32,7 +35,7 @@ fn spawn_obstacle(
     mut commands: Commands,
     mut timer: ResMut<SpawnTimer>,
     time: Res<Time>,
-    asset_server: Res<AssetServer>,
+    scene_asset: Res<SceneAssets>,
 ) {
     timer.timer.tick(time.delta());
     if !timer.timer.just_finished() {
@@ -58,7 +61,7 @@ fn spawn_obstacle(
             velocity: Velocity::new(vel),
             accelearion: Accerleration::new(accel),
             model: SceneBundle {
-                scene: asset_server.load("debris-bumper.glb#Scene0"),
+                scene: scene_asset.obstacle.clone(),
                 transform: Transform::from_translation(trans),
                 ..default()
             },
