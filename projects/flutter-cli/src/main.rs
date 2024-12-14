@@ -13,12 +13,23 @@ fn create_flutter_project(project_name: &str) {
         .arg("--overwrite")
         .arg("--project-name")
         .arg(project_name)
-        .arg(".") 
+        .arg(".")
         .status()
         .expect("Failed to execute Flutter command");
 
     if status.success() {
         println!("Flutter project '{}' created successfully!", project_name);
+
+        // Step 2: Initialize Git repository
+        let git_status = Command::new("git")
+            .arg("init")
+            .status()
+            .expect("Failed to execute Git command");
+
+        if git_status.success() {
+        } else {
+            eprintln!("Failed to initialize Git repository.");
+        }
     } else {
         eprintln!("Failed to create Flutter project.");
     }
@@ -29,6 +40,7 @@ fn main() {
 
     let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("What do you choose?")
+        .default(0)
         .items(&items)
         .interact()
         .unwrap();
@@ -38,7 +50,7 @@ fn main() {
             println!("Please select the output directory:");
 
             let output_dir = FileDialog::new()
-                .set_location(".") // Start in the current directory
+                .set_location("/home/soham32/Coding/Flutter/") // Start in the current directory
                 .show_open_single_dir()
                 .expect("Failed to open file dialog")
                 .expect("No directory selected");
