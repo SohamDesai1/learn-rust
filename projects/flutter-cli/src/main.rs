@@ -50,7 +50,6 @@ fn main() {
             println!("Please select the output directory:");
 
             let output_dir = FileDialog::new()
-                .set_location("/home/soham32/Coding/Flutter/") // Start in the current directory
                 .show_open_single_dir()
                 .expect("Failed to open file dialog")
                 .expect("No directory selected");
